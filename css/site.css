@@ -15,15 +15,6 @@
     stroke-width:1px !important;
 }
 
-#hdx-3W-where {
-    height:470px;
-    width:100%;
-}
-
-.hdx-3w-viz{
-    width:100%;
-}
-
 #header{
     padding-bottom:20px;
     border-bottom-color: #dddddd;
@@ -37,17 +28,14 @@
     min-width:500px;
 }
 
-#reset{
+.dashbutton{
     background-color:#E57373;
     border-color:#E57373;
 }
 
-.colheight{
-    height:235px;
-}
-
-.colheight2{
-    height:220px;
+.dashbutton:hover {
+    background-color:#D56363;
+    border-color:#D56363;
 }
 
 #data-table{
@@ -56,10 +44,16 @@
     margin-top:20px;
         
 }
-
-
 .dc-table-group{
     background-color: #fff;
     color:#fff;
     width:100%;
+}
+
+.viz-chart {
+    width:100%;
+}
+
+#download {
+    margin-top:30px;
 }
