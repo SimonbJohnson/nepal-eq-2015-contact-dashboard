@@ -91,13 +91,29 @@ dc.dataTable("#data-table")
           
     dc.renderAll();
     
-    var g = d3.selectAll('#hdx-3W-what').select('svg').append('g');
+    var g = d3.selectAll('#org-chart').select('svg').append('g');
     
     g.append('text')
         .attr('class', 'x-axis-label')
         .attr('text-anchor', 'middle')
-        .attr('x', $('#hdx-3W-who').width()/2)
-        .attr('y', 200)
-        .text('Activities');
+        .attr('x', $('#org-chart').width()/2-15)
+        .attr('y', 397)
+        .text('People');
 
+    var g = d3.selectAll('#team-chart').select('svg').append('g');
 
+    g.append('text')
+        .attr('class', 'x-axis-label')
+        .attr('text-anchor', 'middle')
+        .attr('x', $('#team-chart').width()/2-15)
+        .attr('y', 397)
+        .text('People');
+
+    var g = d3.selectAll('#incountry-chart').select('svg').append('g');
+
+    g.append('text')
+        .attr('class', 'x-axis-label')
+        .attr('text-anchor', 'middle')
+        .attr('x', $('#incountry-chart').width()/2-15)
+        .attr('y', 397)
+        .text('People');

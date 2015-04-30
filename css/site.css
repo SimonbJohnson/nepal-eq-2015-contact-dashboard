@@ -57,28 +57,9 @@
         
 }
 
-.table_head {
-    width:16%;
-    display:inline-block;
-}
 
 .dc-table-group{
     background-color: #fff;
     color:#fff;
     width:100%;
-}
-
-tbody{
-    width:100%;
-    display:table;
-}
-
-.dc-table-row {
-    width:100%;
-}
-
-.dc-table-column{
-    width:16%;
-    padding:0px;
-    margin:0px;
 }
