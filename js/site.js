@@ -1,8 +1,30 @@
+function downloadData(data){
+    var csvContent = 'data:text/csv;charset=utf-8,';
+    for (var key in data[0]){
+        csvContent += key+",";
+    }
+    csvContent += '\n';
+    data.forEach(function(e, index){
+        for (var key in e){
+            csvContent += e[key]+",";
+        }
+        csvContent += '\n';
+    });
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement('a');
+    link.setAttribute("id","data-download-csv");
+    $('#header').append(link);
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Contact_list.csv");
+    link.click();
+    link.parentNode.removeChild(link);
+}
+
 var color = "#E57373";
 
 var orgChart = dc.rowChart('#org-chart');
 var teamChart = dc.rowChart('#team-chart');
-var incountryChart = dc.rowChart('#incountry-chart');
+var incountryChart = dc.pieChart('#incountry-chart');
 
 var cf = crossfilter(data);
 
@@ -43,14 +65,9 @@ teamChart.width($('#team-chart').width()).height(400)
 incountryChart.width($('#incountry-chart').width()).height(400)
             .dimension(incountryDimension)
             .group(incountryGroup)
-            .elasticX(true)
-            .data(function(group) {
-                return group.top(20);
-            })
-            .labelOffsetY(13)
-            .colors([color])
-            .colorAccessor(function(d, i){return 0;})
-            .xAxis().ticks(5);    
+            .colors(['#FFD600','#4CAF50'])
+            .colorDomain([0,1])
+            .colorAccessor(function(d, i){return i;}); 
 
 dc.dataCount('#count-info')
             .dimension(cf)
@@ -117,3 +134,7 @@ dc.dataTable("#data-table")
         .attr('x', $('#incountry-chart').width()/2-15)
         .attr('y', 397)
         .text('People');
+
+$('#download').off().on().click(function(){
+    downloadData(orgDimension.top(1000));
+});

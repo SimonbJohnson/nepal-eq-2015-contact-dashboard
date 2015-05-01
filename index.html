@@ -31,36 +31,45 @@
                         <p>IFRC contact list. Select one or more rows on the charts to filter the data.</p>
                     </div>
                     <div class="col-md-1">
-                        <a class="reset btn btn-primary btn-sm" id="reset" href="javascript:dc.filterAll();dc.redrawAll();">Reset All</a>
+                        <a class="reset btn btn-primary btn-sm dashbutton" id="reset" href="javascript:dc.filterAll();dc.redrawAll();">Reset All</a>
                     </div>                            
                     <div id="count-info" class="col-md-3">
                         <span class="filter-count "></span> selected out of <span class="total-count "></span> records.
                     </div>                   
                 </div>
             <div class="row">
-                <div class="col-md-4" id="org-chart">
-                    <h4>Organisation</h4>
+                <div class="col-md-4">
+                    <div class="viz-chart" id="org-chart">
+                        <h4>Organisation</h4>
+                    </div>
                 </div>
-                <div class="col-md-4" id="team-chart">
-                    <h4>Team</h4>
+                <div class="col-md-4">
+                    <div class="viz-chart" id="team-chart">
+                        <h4>Team</h4>
+                    </div>
                 </div>
-                <div class="col-md-4" id="incountry-chart">
-                    <h4>In Country</h4>
+                <div class="col-md-4">
+                    <div class="viz-chart" id="incountry-chart">
+                        <h4>In Country</h4>
+                    </div>
                 </div>                
             </div>
-            <div class="row">                
-                <table class='table table-hover' id='data-table'>
-                  <thead>
-                    <tr class='header'>
-                      <th>Name</th>
-                      <th>Organisation</th>
-                      <th>Team</th>
-                      <th>In Country</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                    </tr>
-                  </thead>
-                </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <a id="download" class="reset btn btn-primary btn-sm dashbutton">Download Current List</a>
+                    <table class="table table-hover" id="data-table">
+                      <thead>
+                        <tr class="header">
+                          <th>Name</th>
+                          <th>Organisation</th>
+                          <th>Team</th>
+                          <th>In Country</th>
+                          <th>Email</th>
+                          <th>Phone</th>
+                        </tr>
+                      </thead>
+                    </table>
+                </div>
             </div>            
         </div>
         <script src="js/site.js"></script>
