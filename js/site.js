@@ -126,15 +126,6 @@ dc.dataTable("#data-table")
         .attr('y', 397)
         .text('People');
 
-    var g = d3.selectAll('#incountry-chart').select('svg').append('g');
-
-    g.append('text')
-        .attr('class', 'x-axis-label')
-        .attr('text-anchor', 'middle')
-        .attr('x', $('#incountry-chart').width()/2-15)
-        .attr('y', 397)
-        .text('People');
-
 $('#download').off().on().click(function(){
     downloadData(orgDimension.top(1000));
 });
