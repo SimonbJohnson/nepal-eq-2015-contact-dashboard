@@ -20,112 +20,163 @@ function downloadData(data){
     link.parentNode.removeChild(link);
 }
 
-var color = "#E57373";
+function sheetLoaded(sheetData){
+    console.log(sheetData);
+    initDashboard(sheetData.feed.entry.slice(1,sheetData.feed.entry.length));
+}
 
-var orgChart = dc.rowChart('#org-chart');
-var teamChart = dc.rowChart('#team-chart');
-var incountryChart = dc.pieChart('#incountry-chart');
+function initDashboard(data){
+    console.log(data);
+    var color = "#E57373";
 
-var cf = crossfilter(data);
+    var orgChart = dc.rowChart('#org-chart');
+    var teamChart = dc.rowChart('#team-chart');
+    var incountryChart = dc.pieChart('#incountry-chart');
 
-var orgDimension = cf.dimension(function(d){ return d['Organisation']; });
-var teamDimension = cf.dimension(function(d){ return d['Teams']; });
-var incountryDimension = cf.dimension(function(d){ return d['In Country']; });
+    var cf = crossfilter(data);
 
-var orgGroup = orgDimension.group();
-var teamGroup = teamDimension.group();
-var incountryGroup = incountryDimension.group();
+    var orgDimension = cf.dimension(function(d){
+        if(typeof d['gsx$keyfields']!=='undefined'){
+            return d['gsx$keyfields'].$t;
+        } else {
+            return "No Data";
+        }
+    });
+    var teamDimension = cf.dimension(function(d){
+        console.log(d['gsx$_clrrx']);
+        if(typeof d['gsx$_clrrx']!=='undefined'){
+            return d['gsx$_clrrx'].$t;
+        } else {
+            return "No Data";
+        }
+    });
+    var incountryDimension = cf.dimension(function(d){
+        if(typeof d['gsx$_cre1l']!=='undefined'){
+            return d['gsx$_cre1l'].$t;
+        } else {
+            return "No Data";
+        }
+    });
 
-var all = cf.groupAll();
+    var orgGroup = orgDimension.group();
+    var teamGroup = teamDimension.group();
+    var incountryGroup = incountryDimension.group();
 
-orgChart.width($('#org-chart').width()).height(400)
-            .dimension(orgDimension)
-            .group(orgGroup)
-            .elasticX(true)
-            .data(function(group) {
-                return group.top(20);
-            })
-            .labelOffsetY(10)
-            .colors([color])
-            .colorAccessor(function(d, i){return 0;})
-            .xAxis().ticks(5);
-    
-teamChart.width($('#team-chart').width()).height(400)
-            .dimension(teamDimension)
-            .group(teamGroup)
-            .elasticX(true)
-            .data(function(group) {
-                return group.top(20);
-            })
-            .labelOffsetY(13)
-            .colors([color])
-            .colorAccessor(function(d, i){return 0;})
-            .xAxis().ticks(5);
-    
-incountryChart.width($('#incountry-chart').width()).height(400)
-            .dimension(incountryDimension)
-            .group(incountryGroup)
-            .colors(['#FFD600','#4CAF50'])
-            .colorDomain([0,1])
-            .colorAccessor(function(d, i){return i;}); 
+    var all = cf.groupAll();
 
-dc.dataCount('#count-info')
-            .dimension(cf)
-            .group(all);
-      
-dc.dataTable("#data-table")
-                .dimension(orgDimension)                
-                .group(function (d) {
-                   return 0;
+    orgChart.width($('#org-chart').width()).height(400)
+                .dimension(orgDimension)
+                .group(orgGroup)
+                .elasticX(true)
+                .data(function(group) {
+                    return group.top(20);
                 })
-                .size(650)
-                .columns([
-                    function(d){
-                       return d["Name"]; 
-                    },
-                    function(d){
-                       return d["Organisation"]; 
-                    },
-                    function(d){
-                       return d["Teams"]; 
-                    },
-                    function(d){
-                       return d["In Country"]; 
-                    },
-                    function(d){
-                       return d["Email"]; 
-                    },
-                    function(d){
-                       return d["Mobile"]; 
-                    }
-                ])
-                .sortBy(function(d) {
-                        return d["Name"];
-                    })                
-                .renderlet(function (table) {
-                    table.selectAll(".dc-table-group").classed("info", true);
-                });            
-          
-    dc.renderAll();
-    
-    var g = d3.selectAll('#org-chart').select('svg').append('g');
-    
-    g.append('text')
-        .attr('class', 'x-axis-label')
-        .attr('text-anchor', 'middle')
-        .attr('x', $('#org-chart').width()/2-15)
-        .attr('y', 397)
-        .text('People');
+                .labelOffsetY(10)
+                .colors([color])
+                .colorAccessor(function(d, i){return 0;})
+                .xAxis().ticks(5);
 
-    var g = d3.selectAll('#team-chart').select('svg').append('g');
+    teamChart.width($('#team-chart').width()).height(400)
+                .dimension(teamDimension)
+                .group(teamGroup)
+                .elasticX(true)
+                .data(function(group) {
+                    return group.top(20);
+                })
+                .labelOffsetY(13)
+                .colors([color])
+                .colorAccessor(function(d, i){return 0;})
+                .xAxis().ticks(5);
 
-    g.append('text')
-        .attr('class', 'x-axis-label')
-        .attr('text-anchor', 'middle')
-        .attr('x', $('#team-chart').width()/2-15)
-        .attr('y', 397)
-        .text('People');
+    incountryChart.width($('#incountry-chart').width()).height(400)
+                .dimension(incountryDimension)
+                .group(incountryGroup)
+                .colors(['#FFD600','#4CAF50'])
+                .colorDomain([0,1])
+                .colorAccessor(function(d, i){return i;}); 
 
-$('#download').off().on().click(function(){
-    downloadData(orgDimension.top(1000));
-});
+    dc.dataCount('#count-info')
+                .dimension(cf)
+                .group(all);
+
+    dc.dataTable("#data-table")
+                    .dimension(orgDimension)                
+                    .group(function (d) {
+                       return 0;
+                    })
+                    .size(650)
+                    .columns([
+                        function(d){
+                            if(typeof d["gsx$_ciyn3"]!=='undefined'){
+                                return d["gsx$_ciyn3"].$t;
+                            } else {
+                                return "No Data";
+                            }
+                        },
+                        function(d){
+                            if(typeof d["gsx$keyfields"]!=='undefined'){
+                                return d["gsx$keyfields"].$t;
+                            } else {
+                                return "No Data";
+                            }
+                        },
+                        function(d){
+                            if(typeof d["gsx$_clrrx"]!=='undefined'){
+                                return d["gsx$_clrrx"].$t;
+                            } else {
+                                return "No Data";
+                            }
+                        },
+                        function(d){
+                            if(typeof d["gsx$_cre1l"]!=='undefined'){
+                                return d["gsx$_cre1l"].$t;
+                            } else {
+                                return "No Data";
+                            }
+                        },
+                        function(d){
+                            if(typeof d["gsx$_cztg3"]!=='undefined'){
+                                return d["gsx$_cztg3"].$t;
+                            } else {
+                                return "No Data";
+                            }
+                        },
+                        function(d){
+                            if(typeof d["gsx$_d180g"]!=='undefined'){
+                                return d["gsx$_d180g"].$t;
+                            } else {
+                                return "No Data";
+                            }
+                        }                        
+                    ])
+                    .sortBy(function(d) {
+                            return d["gsx$_ciyn3"];
+                        })                
+                    .renderlet(function (table) {
+                        table.selectAll(".dc-table-group").classed("info", true);
+                    });            
+
+        dc.renderAll();
+
+        var g = d3.selectAll('#org-chart').select('svg').append('g');
+
+        g.append('text')
+            .attr('class', 'x-axis-label')
+            .attr('text-anchor', 'middle')
+            .attr('x', $('#org-chart').width()/2-15)
+            .attr('y', 397)
+            .text('People');
+
+        var g = d3.selectAll('#team-chart').select('svg').append('g');
+
+        g.append('text')
+            .attr('class', 'x-axis-label')
+            .attr('text-anchor', 'middle')
+            .attr('x', $('#team-chart').width()/2-15)
+            .attr('y', 397)
+            .text('People');
+
+    $('#download').off().on().click(function(){
+        downloadData(orgDimension.top(1000));
+    });
+}
